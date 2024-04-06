@@ -1,10 +1,11 @@
 import { Outlet, Link } from "react-router-dom";
+import Footer from "../components/Footer";
 
 function Default() {
   return (
     <section>
-      This is header
       <Outlet />
+      <Footer />
     </section>
   );
 }
