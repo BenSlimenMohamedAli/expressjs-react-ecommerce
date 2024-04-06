@@ -1,0 +1,44 @@
+version: "3"
+services:
+  frontend:
+    image: node:18.19
+    ports:
+      - "4200:4200"
+    working_dir: /app
+    restart: "on-failure"
+    command: npm start
+    volumes:
+      - ./apps/frontend:/app
+    networks:
+      - ecommerceNetwork
+    depends_on:
+      - backend
+
+  backend:
+    image: node:18.19
+    ports:
+      - "8080:8080"
+    working_dir: /app
+    command: "npm run dev"
+    volumes:
+      - ./apps/backend:/app
+      - ./config/.env:/app/.env
+    networks:
+      - ecommerceNetwork
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/db:/data/db
+    networks:
+      - ecommerceNetwork
+
+networks:
+  ecommerceNetwork:
